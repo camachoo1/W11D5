@@ -1,5 +1,5 @@
 import { LOAD_ITEMS, REMOVE_ITEM, ADD_ITEM } from './items';
-import * as PokemonApiUtil from '../util/pokemon_api_util';
+// import * as PokemonApiUtil from '../util/pokemon_api_util';
 
 const LOAD = 'pokemon/LOAD';
 const LOAD_TYPES = 'pokemon/LOAD_TYPES';
@@ -48,20 +48,34 @@ export const getPokemonTypes = () => async (dispatch) => {
 };
 
 export const createPokemon = (payload) => async (dispatch) => {
-  const res = await PokemonApiUtil.postPokemon(payload);
+  const res = await fetch(`/api/pokemon`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (res.ok) {
     const pokemonData = await res.json();
     dispatch(addOnePokemon(pokemonData));
+    return pokemonData;
   }
 };
 
 export const editPokemon = (payload) => async (dispatch) => {
-  const res = await PokemonApiUtil.editPokemon(payload);
+  const res = await fetch(`/api/pokemon/${payload.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (res.ok) {
     const pokemonData = await res.json();
     dispatch(addOnePokemon(pokemonData));
+    return pokemonData;
   }
 };
 

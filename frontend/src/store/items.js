@@ -1,4 +1,4 @@
-import * as PokemonApiUtil from '../util/pokemon_api_util';
+// import * as PokemonApiUtil from '../util/pokemon_api_util';
 
 export const LOAD_ITEMS = 'items/LOAD_ITEMS';
 export const UPDATE_ITEM = 'items/UPDATE_ITEM';
@@ -37,11 +37,18 @@ export const fetchItems = (pokemonId) => async (dispatch) => {
 };
 
 export const editItems = (payload) => async (dispatch) => {
-  const res = await PokemonApiUtil.updateItem(payload);
+  const res = await fetch(`/api/items/${payload.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (res.ok) {
     const itemData = await res.json();
     dispatch(update(itemData));
+    return itemData;
   }
 };
 
