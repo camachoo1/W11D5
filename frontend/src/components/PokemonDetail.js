@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PokemonItems from './PokemonItems';
 import EditPokemonForm from './EditPokemonForm';
 import ItemForm from './ItemForm';
+import { fetchOnePokemon } from '../store/pokemon';
 
 const PokemonDetail = () => {
+  const dispatch = useDispatch();
   const { pokemonId } = useParams();
-  const pokemon = useSelector(state => state.pokemon[pokemonId]);
+  const pokemon = useSelector((state) => state.pokemon[pokemonId]);
   const [showEditPokeForm, setShowEditPokeForm] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
 
   useEffect(() => {
     setShowEditPokeForm(false);
     setEditItemId(null);
-  }, [pokemonId]);
+    dispatch(fetchOnePokemon(pokemonId));
+  }, [dispatch, pokemonId]);
 
   if (!pokemon || !pokemon.moves) {
     return null;
@@ -24,21 +27,21 @@ const PokemonDetail = () => {
 
   if (editItemId) {
     content = (
-      <ItemForm 
-        itemId={editItemId} 
-        hideForm={() => setEditItemId(null)} 
+      <ItemForm
+        itemId={editItemId}
+        hideForm={() => setEditItemId(null)}
       />
     );
   } else if (showEditPokeForm && pokemon.captured) {
     content = (
-      <EditPokemonForm 
-        pokemon={pokemon} 
-        hideForm={() => setShowEditPokeForm(false)} 
+      <EditPokemonForm
+        pokemon={pokemon}
+        hideForm={() => setShowEditPokeForm(false)}
       />
     );
   } else {
     content = (
-      <div className="pokemon-detail-lists">
+      <div className='pokemon-detail-lists'>
         <div>
           <h2>Information</h2>
           <ul>
@@ -57,16 +60,17 @@ const PokemonDetail = () => {
             <li>
               <b>Moves</b>
               <ul>
-                {pokemon.moves && pokemon.moves.map((move, i) => (
-                  <li key={move+i}>{move}</li>
-                ))}
+                {pokemon.moves &&
+                  pokemon.moves.map((move, i) => (
+                    <li key={move + i}>{move}</li>
+                  ))}
               </ul>
             </li>
           </ul>
         </div>
         <div>
           <h2>
-            Items 
+            Items
             <button> + </button>
           </h2>
           <table>
@@ -79,7 +83,10 @@ const PokemonDetail = () => {
               </tr>
             </thead>
             <tbody>
-              <PokemonItems pokemon={pokemon} setEditItemId={setEditItemId} />
+              <PokemonItems
+                pokemon={pokemon}
+                setEditItemId={setEditItemId}
+              />
             </tbody>
           </table>
         </div>
@@ -88,19 +95,20 @@ const PokemonDetail = () => {
   }
 
   return (
-    <div className="pokemon-detail">
+    <div className='pokemon-detail'>
       <div className={`pokemon-detail-image-background`}>
         <div
-          className="pokemon-detail-image"
+          className='pokemon-detail-image'
           style={{ backgroundImage: `url('${pokemon.imageUrl}')` }}
         ></div>
         <div>
-          <h1 className="bigger">{pokemon.name}</h1>
-          {(!showEditPokeForm && pokemon.captured) && (
-            <button onClick={() => setShowEditPokeForm(true)}>Edit</button>
+          <h1 className='bigger'>{pokemon.name}</h1>
+          {!showEditPokeForm && pokemon.captured && (
+            <button onClick={() => setShowEditPokeForm(true)}>
+              Edit
+            </button>
           )}
         </div>
-
       </div>
       {content}
     </div>

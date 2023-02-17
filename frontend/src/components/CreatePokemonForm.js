@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getPokemonTypes } from '../store/pokemon';
+import { createPokemon } from '../store/pokemon';
 
 const CreatePokemonForm = ({ hideForm }) => {
-  const pokeTypes = useSelector(state => state.pokemon.types);
+  const pokeTypes = useSelector((state) => state.pokemon.types);
   const dispatch = useDispatch();
   const history = useHistory();
   const [number, setNumber] = useState(1);
@@ -38,19 +39,19 @@ const CreatePokemonForm = ({ hideForm }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const payload = {
-    //   number,
-    //   attack,
-    //   defense,
-    //   imageUrl,
-    //   name,
-    //   type,
-    //   move1,
-    //   move2,
-    //   moves: [move1, move2]
-    // };
+    const payload = {
+      number,
+      attack,
+      defense,
+      imageUrl,
+      name,
+      type,
+      move1,
+      move2,
+      moves: [move1, move2],
+    };
 
-    let createdPokemon;
+    let createdPokemon = await dispatch(createPokemon(payload));
     if (createdPokemon) {
       history.push(`/pokemon/${createdPokemon.id}`);
       hideForm();
@@ -63,58 +64,67 @@ const CreatePokemonForm = ({ hideForm }) => {
   };
 
   return (
-    <section className="new-form-holder centered middled">
-      <form className="create-pokemon-form" onSubmit={handleSubmit}>
+    <section className='new-form-holder centered middled'>
+      <form className='create-pokemon-form' onSubmit={handleSubmit}>
         <input
-          type="number"
-          placeholder="Number"
-          min="1"
+          type='number'
+          placeholder='Number'
+          min='1'
           required
           value={number}
-          onChange={updateNumber} />
+          onChange={updateNumber}
+        />
         <input
-          type="number"
-          placeholder="Attack"
-          min="0"
-          max="100"
+          type='number'
+          placeholder='Attack'
+          min='0'
+          max='100'
           required
           value={attack}
-          onChange={updateAttack} />
+          onChange={updateAttack}
+        />
         <input
-          type="number"
-          placeholder="Defense"
-          min="0"
-          max="100"
+          type='number'
+          placeholder='Defense'
+          min='0'
+          max='100'
           required
           value={defense}
-          onChange={updateDefense} />
+          onChange={updateDefense}
+        />
         <input
-          type="text"
-          placeholder="Image URL"
+          type='text'
+          placeholder='Image URL'
           value={imageUrl}
-          onChange={updateImageUrl} />
+          onChange={updateImageUrl}
+        />
         <input
-          type="text"
-          placeholder="Name"
+          type='text'
+          placeholder='Name'
           value={name}
-          onChange={updateName} />
+          onChange={updateName}
+        />
         <input
-          type="text"
-          placeholder="Move 1"
+          type='text'
+          placeholder='Move 1'
           value={move1}
-          onChange={updateMove1} />
+          onChange={updateMove1}
+        />
         <input
-          type="text"
-          placeholder="Move 2"
+          type='text'
+          placeholder='Move 2'
           value={move2}
-          onChange={updateMove2} />
+          onChange={updateMove2}
+        />
         <select onChange={updateType} value={type}>
-          {pokeTypes.map(type =>
+          {pokeTypes.map((type) => (
             <option key={type}>{type}</option>
-          )}
+          ))}
         </select>
-        <button type="submit">Create new Pokemon</button>
-        <button type="button" onClick={handleCancelClick}>Cancel</button>
+        <button type='submit'>Create new Pokemon</button>
+        <button type='button' onClick={handleCancelClick}>
+          Cancel
+        </button>
       </form>
     </section>
   );
