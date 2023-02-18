@@ -12,6 +12,7 @@ const PokemonDetail = () => {
   const pokemon = useSelector((state) => state.pokemon[pokemonId]);
   const [showEditPokeForm, setShowEditPokeForm] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
+  // const [formType, setFormType] = useState(false);
 
   useEffect(() => {
     setShowEditPokeForm(false);
@@ -28,6 +29,7 @@ const PokemonDetail = () => {
   if (editItemId) {
     content = (
       <ItemForm
+        formType={formType}
         itemId={editItemId}
         hideForm={() => setEditItemId(null)}
       />

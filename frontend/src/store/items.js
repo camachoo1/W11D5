@@ -67,6 +67,7 @@ export const editItem = (payload) => async (dispatch) => {
 };
 
 export const deleteItem = (payload) => async (dispatch) => {
+  debugger;
   const res = await fetch(`/api/items/${payload.id}`, {
     method: 'DELETE',
     body: JSON.stringify(payload),
@@ -77,7 +78,8 @@ export const deleteItem = (payload) => async (dispatch) => {
 
   if (res.ok) {
     const itemData = await res.json();
-    dispatch(remove(itemData, payload.pokemonId));
+    debugger;
+    dispatch(remove(itemData.id, payload.pokemonId));
   }
 };
 
@@ -96,7 +98,8 @@ const itemsReducer = (state = initialState, action) => {
       };
     case REMOVE_ITEM:
       const newState = { ...state };
-      delete newState[action.itemId];
+      debugger;
+      delete newState[action.itemId.id];
       return newState;
     case ADD_ITEM:
     case UPDATE_ITEM:

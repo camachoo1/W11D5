@@ -11,7 +11,10 @@ const PokemonItems = ({ pokemon, setEditItemId }) => {
     dispatch(fetchItems(pokemonId));
   }, [pokemonId, dispatch]);
 
+  const allItems = useSelector((state) => Object.values(state.items));
+
   const items = useSelector((state) => {
+    // console.log(state.items);
     if (!pokemon.items) return null;
     return pokemon.items.map((itemId) => state.items[itemId]);
   });
@@ -19,6 +22,8 @@ const PokemonItems = ({ pokemon, setEditItemId }) => {
   if (!items) {
     return null;
   }
+
+  // return <>{console.log(pokemon)}</>;
 
   return items.map((item) => (
     <tr key={item.id}>
