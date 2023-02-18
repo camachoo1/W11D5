@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { editItems } from '../store/items';
+import { editItem } from '../store/items';
 
 const ItemForm = ({ itemId, hideForm }) => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const ItemForm = ({ itemId, hideForm }) => {
       price,
     };
 
-    let returnedItem = await dispatch(editItems(payload));
+    let returnedItem = dispatch(editItem(payload));
     if (returnedItem) {
       hideForm();
     }

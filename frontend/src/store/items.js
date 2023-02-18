@@ -36,7 +36,22 @@ export const fetchItems = (pokemonId) => async (dispatch) => {
   }
 };
 
-export const editItems = (payload) => async (dispatch) => {
+export const addItem = (payload) => async (dispatch) => {
+  const res = await fetch(`/api/pokemon/${payload.pokemonId}/items`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (res.ok) {
+    const itemData = await res.json();
+    dispatch(add(itemData));
+  }
+};
+
+export const editItem = (payload) => async (dispatch) => {
   const res = await fetch(`/api/items/${payload.id}`, {
     method: 'PUT',
     body: JSON.stringify(payload),
@@ -48,7 +63,21 @@ export const editItems = (payload) => async (dispatch) => {
   if (res.ok) {
     const itemData = await res.json();
     dispatch(update(itemData));
-    return itemData;
+  }
+};
+
+export const deleteItem = (payload) => async (dispatch) => {
+  const res = await fetch(`/api/items/${payload.id}`, {
+    method: 'DELETE',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (res.ok) {
+    const itemData = await res.json();
+    dispatch(remove(itemData, payload.pokemonId));
   }
 };
 
