@@ -29,7 +29,7 @@ const PokemonDetail = () => {
   if (editItemId) {
     content = (
       <ItemForm
-        formType={formType}
+        // formType={formType}
         itemId={editItemId}
         hideForm={() => setEditItemId(null)}
       />
